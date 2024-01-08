@@ -7,6 +7,7 @@ import (
 
 var DB *gorm.DB
 
+// Connected establishes a connection to the database
 func Connected() {
 	database, err := gorm.Open(mysql.Open("root:ryan14@tcp(localhost:3306)/golang_db"))
 	if err != nil {

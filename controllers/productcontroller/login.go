@@ -13,26 +13,6 @@ type users struct {
 }
 
 func Login(c *gin.Context) {
-	var user *users
-
-	if err := c.BindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-	if user.Username == "ryan" && user.Password == "ryan" {
-		c.JSON(http.StatusOK, gin.H{
-			"status":  "success",
-			"message": "login success",
-		})
-	} else {
-
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"status":  "fail",
-			"message": "login fail",
-		})
-	}
 }
 
 func Register(c *gin.Context) {
