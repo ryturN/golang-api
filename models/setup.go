@@ -1,6 +1,9 @@
 package models
 
 import (
+	"fmt"
+
+	"github.com/golang-api/entity"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -9,11 +12,15 @@ var DB *gorm.DB
 
 // Connected establishes a connection to the database
 func Connected() {
-	database, err := gorm.Open(mysql.Open("root:ryan14@tcp(localhost:3306)/golang_db"))
+
+	connectStr := fmt.Sprintf("root:ryan14@tcp(localhost:3306)/golang_db")
+	database, err := gorm.Open(mysql.Open(connectStr), &gorm.Config{})
 	if err != nil {
-		panic(err.Error())
+		panic("fail to connect")
 	}
-	database.AutoMigrate(&Users{})
+	// log.Printf("Connected to database")
+	database.AutoMigrate(entity.Users{})
+	// database.AutoMigrate(&Users{})
 	DB = database
 
 }

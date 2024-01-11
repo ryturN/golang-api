@@ -6,12 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-api/controllers/logincontroller"
 	"github.com/golang-api/models"
+	"github.com/golang-api/routers"
 )
 
 func main() {
+	models.LoadConfig()
+	models.Connected()
+
 	router := gin.Default()
 	v1 := router.Group("/v1")
-	models.Connected()
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Hello World!",
@@ -30,5 +33,13 @@ func main() {
 	v2.GET("/findUser", logincontroller.FindUser)
 	v2.GET("/findUser/:id", logincontroller.FindUserById)
 
-	router.Run("localhost:3030")
+	v3 := router.Group("/v3")
+	v3.GET("/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  http.StatusOK,
+			"message": "Connected!",
+		})
+	})
+	routers.AuthRouter(v3)
+	router.Run(":3030")
 }

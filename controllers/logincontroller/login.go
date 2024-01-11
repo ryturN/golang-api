@@ -6,21 +6,32 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-api/dto"
 	"github.com/golang-api/models"
 )
 
 type Users struct {
 	Username string `json:"username" binding:"required"`
-	Email    string `json:"email" binding:"required"`
 	Password string `json:"password"`
 }
 
 func Login(c *gin.Context) {
+	var login Users
+
+	if err := c.BindJSON(&login); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 }
 
 func Register(c *gin.Context) {
 	var register models.Users
-
+	// hash, err := bcrypt.GenerateFromPassword([]byte(register.Password), bcrypt.DefaultCost)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
 	if err := c.BindJSON(&register); err != nil {
 		errorMessages := []string{}
 		for _, e := range err.(validator.ValidationErrors) {
@@ -42,7 +53,7 @@ func Register(c *gin.Context) {
 }
 
 func FindUser(c *gin.Context) {
-	var users []models.Users
+	var users []dto.RegisterRequest
 
 	models.DB.Find(&users)
 
