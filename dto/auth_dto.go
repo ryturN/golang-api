@@ -12,3 +12,10 @@ type LoginRequest struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
+
+type LoginResponse struct {
+	UserId   string `json:"user_id"`
+	FullName string `json:"full_name"`
+	Username string `json:"username"`
+	Token    string `json:"token" `
+}

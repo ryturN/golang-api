@@ -14,5 +14,5 @@ func AuthRouter(v3 *gin.RouterGroup) {
 	authHandler := handler.NewAuthHandler(authService)
 
 	v3.POST("/register", authHandler.Register)
-
+	v3.POST("/login", authHandler.Login)
 }
