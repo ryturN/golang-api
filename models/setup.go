@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/golang-api/entity"
 	"gorm.io/driver/mysql"
@@ -18,7 +19,7 @@ func Connected() {
 	if err != nil {
 		panic("fail to connect")
 	}
-	// log.Printf("Connected to database")
+	log.Printf("Connected to database")
 	database.AutoMigrate(entity.Users{})
 	// database.AutoMigrate(&Users{})
 	DB = database

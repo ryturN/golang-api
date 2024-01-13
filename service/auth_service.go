@@ -31,9 +31,9 @@ func (s *authService) Register(req *dto.RegisterRequest) error {
 	if emailExist := s.repository.EmailExists(req.Email); emailExist {
 		return &errorhandler.BadRequestError{Message: "email already exists"}
 	}
-	// if usernameExist := s.repository.UsernameExist(req.Username); usernameExist {
-	// 	return &errorhandler.BadRequestError{Message: "username already exists"}
-	// }
+	if usernameExist := s.repository.UsernameExists(req.Username); usernameExist {
+		return &errorhandler.BadRequestError{Message: "username already exists"}
+	}
 	if req.Password != req.ConfirmPassword {
 		return &errorhandler.BadRequestError{Message: "passwords do not match"}
 	}

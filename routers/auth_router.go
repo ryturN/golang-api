@@ -15,4 +15,5 @@ func AuthRouter(v3 *gin.RouterGroup) {
 
 	v3.POST("/register", authHandler.Register)
 	v3.POST("/login", authHandler.Login)
+
 }
