@@ -10,13 +10,13 @@ import (
 
 var myKey = []byte("secretkey")
 
-type getJWT struct {
+type GetJWT struct {
 	UsersId string `json:"users_id"`
 	jwt.RegisteredClaims
 }
 
 func NewGetJWT(user *entity.Users) (string, error) {
-	claims := getJWT{
+	claims := GetJWT{
 		user.UsersId,
 		jwt.RegisteredClaims{
 			Issuer:    "golang-api",
@@ -31,13 +31,13 @@ func NewGetJWT(user *entity.Users) (string, error) {
 }
 
 func ValidateToken(tokenString string) (any, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &getJWT{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("secretkey"), nil
+	token, err := jwt.ParseWithClaims(tokenString, &GetJWT{}, func(token *jwt.Token) (interface{}, error) {
+		return myKey, nil
 	})
 	if err != nil {
 		return nil, fmt.Errorf("unauthorized")
 	}
-	claims, ok := token.Claims.(*getJWT)
+	claims, ok := token.Claims.(*GetJWT)
 	if !ok || token.Valid {
 		return nil, fmt.Errorf("unauthorized")
 	}

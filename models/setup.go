@@ -14,7 +14,7 @@ var DB *gorm.DB
 // Connected establishes a connection to the database
 func Connected() {
 
-	connectStr := fmt.Sprintf("root:@tcp(localhost:3306)/golang_db")
+	connectStr := fmt.Sprintf("root:ryan14@tcp(localhost:3306)/golang_db")
 	database, err := gorm.Open(mysql.Open(connectStr), &gorm.Config{})
 	if err != nil {
 		panic("fail to connect")

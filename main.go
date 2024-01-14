@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-api/controllers/logincontroller"
 	"github.com/golang-api/models"
@@ -14,6 +15,13 @@ func main() {
 	models.Connected()
 
 	router := gin.Default()
+
+	// <================================================================= CORS =================================================================>
+
+	router.Use(cors.Default())
+
+	// <================================================================= CORS =================================================================>
+
 	v1 := router.Group("/v1")
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -41,5 +49,9 @@ func main() {
 		})
 	})
 	routers.AuthRouter(v3)
+	routers.UserRoutes(v3)
 	router.Run(":3030")
+
+	// <================================================================= CORS =================================================================>
+
 }

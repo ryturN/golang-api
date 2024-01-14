@@ -57,5 +57,6 @@ func (h *authHandler) Login(c *gin.Context) {
 		Message:    "Login successful",
 		Data:       result,
 	})
+	c.SetCookie("token", result.Token, 1000000, "/", "", false, true)
 	c.JSON(http.StatusOK, res)
 }
