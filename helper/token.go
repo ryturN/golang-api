@@ -30,16 +30,17 @@ func NewGetJWT(user *entity.Users) (string, error) {
 	return ss, err
 }
 
-func ValidateToken(tokenString string) (any, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &GetJWT{}, func(token *jwt.Token) (interface{}, error) {
+func ValidateToken(accessToken string) (any, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &GetJWT{}, func(token *jwt.Token) (interface{}, error) {
 		return myKey, nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("unauthorized")
+		return nil, err
 	}
 	claims, ok := token.Claims.(*GetJWT)
-	if !ok || token.Valid {
+	if !ok || !token.Valid {
 		return nil, fmt.Errorf("unauthorized")
 	}
+
 	return claims, nil
 }
