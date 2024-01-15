@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,9 +10,8 @@ import (
 )
 
 func MyProfile(c *gin.Context) {
-	ctx := c.Value("ctx").(context.Context) // Access the updated context
+	ctx := c.Value("ctx").(context.Context)
 	users, ok := ctx.Value("userinfo").(*helper.GetJWT)
-	fmt.Println(users)
 	if !ok {
 		res := helper.Response(dto.ResponseParams{
 			StatusCode: http.StatusInternalServerError,
@@ -27,7 +25,7 @@ func MyProfile(c *gin.Context) {
 		res := helper.Response(dto.ResponseParams{
 			StatusCode: http.StatusOK,
 			Message:    "My profile",
-			Data:       users,
+			Data:       users.UsersId,
 		})
 		c.JSON(http.StatusOK, res)
 	}

@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -46,7 +45,7 @@ func Auth() gin.HandlerFunc {
 		}
 
 		users, err := helper.ValidateToken(accessToken)
-		fmt.Println(users)
+		// fmt.Println(users)
 		if err != nil {
 			res := helper.Response(dto.ResponseParams{
 				StatusCode: http.StatusUnauthorized,
