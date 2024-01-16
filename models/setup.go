@@ -21,7 +21,7 @@ func Connected() {
 	}
 	log.Printf("Connected to database")
 	database.AutoMigrate(entity.Users{})
-	// database.AutoMigrate(&Users{})
+	database.AutoMigrate(&entity.Foto{})
 	DB = database
 
 }

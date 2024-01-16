@@ -63,6 +63,13 @@ func (s *authService) Register(req *dto.RegisterRequest) error {
 	if err := s.repository.Register(&user); err != nil {
 		return &errorhandler.InternalServerError{Message: err.Error()}
 	}
+	foto := entity.Foto{
+		UsersId: user.UsersId,
+		Url:     "https://example.com/default-foto.jpg", // Replace with actual foto URL
+	}
+	if err := s.repository.InsertFoto(&foto); err != nil {
+		return &errorhandler.InternalServerError{Message: err.Error()}
+	}
 	return nil
 }
 

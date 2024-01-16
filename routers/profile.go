@@ -9,4 +9,5 @@ import (
 func UserRoutes(v3 *gin.RouterGroup) {
 	v3.Use(middleware.Auth())
 	v3.GET("/profile", handler.MyProfile)
+	v3.GET("/profile/:username", handler.FindUserById)
 }

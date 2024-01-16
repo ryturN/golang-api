@@ -10,6 +10,7 @@ import (
 type AuthRepository interface {
 	EmailExists(email string) bool
 	Register(req *entity.Users) error
+	InsertFoto(req *entity.Foto) error
 	GetUserByUsername(username string) (*entity.Users, error)
 	UsernameExists(username string) bool
 }
@@ -26,6 +27,11 @@ func NewAuthRepository(db *gorm.DB) *authRepository {
 
 func (r *authRepository) Register(user *entity.Users) error {
 	err := r.db.Create(&user).Error
+
+	return err
+}
+func (r *authRepository) InsertFoto(foto *entity.Foto) error {
+	err := r.db.Create(&foto).Error
 
 	return err
 }
@@ -62,10 +68,10 @@ func (r *authRepository) UsernameExists(username string) bool {
 // 	return nil
 // }
 
-func (r *authRepository) GetUserByUsername(username string) (*entity.Users, error) {
+func (r *authRepository) GetUserByUsername(userId string) (*entity.Users, error) {
 	var users entity.Users
 
-	err := r.db.First(&users, "username =?", username).Error
+	err := r.db.First(&users, "username =?", userId).Error
 
 	return &users, err
 }
@@ -80,3 +86,11 @@ func (r *authRepository) GetUserByUsername(username string) (*entity.Users, erro
 // 	}
 // 	return nil
 // }
+
+func (r *authRepository) GetUserByUserId(username string) (*entity.Users, error) {
+	var users entity.Users
+
+	err := r.db.First(&users, "username =?", username).Error
+
+	return &users, err
+}
