@@ -38,6 +38,7 @@ func MyProfile(c *gin.Context) {
 		}
 		if err := models.DB.First(&foto, "users_id=?", users.UsersId); err != nil {
 			if errors.Is(err.Error, gorm.ErrRecordNotFound) {
+				foto.Url = ""
 				return
 			}
 
@@ -75,6 +76,7 @@ func FindUserById(c *gin.Context) {
 	}
 	if err := models.DB.First(&foto, "users_id=?", users.UsersId); err != nil {
 		if errors.Is(err.Error, gorm.ErrRecordNotFound) {
+			foto.Url = ""
 			return
 		}
 

@@ -7,5 +7,12 @@ type ProfileResponse struct {
 	FullName string `json:"full_name"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
-	Url      string `json:"url"`
+	Url      any    `json:"url"`
+}
+
+type UpdateProfileRequest struct {
+	FullName string `json:"full_name"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

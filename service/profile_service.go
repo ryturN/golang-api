@@ -8,6 +8,7 @@ import (
 type ProfileService interface {
 	Register(req *dto.RegisterRequest) error
 	Login(req *dto.LoginRequest) (*dto.LoginResponse, error)
+	UpdateProfil()
 }
 
 type profileService struct {
