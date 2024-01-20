@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -17,26 +16,17 @@ import (
 func MyProfile(c *gin.Context) {
 	var user entity.Users
 	var foto entity.Foto
-	ctx := c.Value("ctx").(context.Context)
-	users, ok := ctx.Value("userinfo").(*helper.GetJWT)
-	if !ok {
-		res := helper.Response(dto.ResponseParams{
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Failed to retrieve user claims",
-			Data:       nil,
-		})
-		c.JSON(http.StatusInternalServerError, res)
-		return
-	}
+	usersId, _ := c.Get("users")
+
 	// if err := models.DB.Preload("fotos").First(&user, "users_id=?", users.UsersId); err != nil {
 	// 	if errors.Is(err.Error, gorm.ErrRecordNotFound) {
 	// 		return
 	// 	}
-	if err := models.DB.First(&user, "users_id=?", users.UsersId); err != nil {
+	if err := models.DB.First(&user, "users_id=?", usersId); err != nil {
 		if errors.Is(err.Error, gorm.ErrRecordNotFound) {
 			return
 		}
-		if err := models.DB.First(&foto, "users_id=?", users.UsersId); err != nil {
+		if err := models.DB.First(&foto, "users_id=?", usersId); err != nil {
 			if errors.Is(err.Error, gorm.ErrRecordNotFound) {
 				foto.Url = ""
 				return

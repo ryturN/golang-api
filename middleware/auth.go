@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -57,8 +56,7 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 
-		ctx := context.WithValue(c.Request.Context(), "userinfo", users)
-		c.Set("ctx", ctx) // Store the gin.Context directly
+		c.Set("users", *users) // Store the gin.Context directly
 		c.Next()
 	}
 }

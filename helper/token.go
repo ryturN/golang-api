@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/golang-api/entity"
@@ -30,17 +30,20 @@ func NewGetJWT(user *entity.Users) (string, error) {
 	return ss, err
 }
 
-func ValidateToken(accessToken string) (any, error) {
+func ValidateToken(accessToken string) (*string, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &GetJWT{}, func(token *jwt.Token) (interface{}, error) {
 		return myKey, nil
 	})
 	if err != nil {
-		return nil, err
+		if err == jwt.ErrSignatureInvalid {
+			return nil, errors.New("invalid signature")
+		}
+		return nil, errors.New("your token was expired")
 	}
 	claims, ok := token.Claims.(*GetJWT)
 	if !ok || !token.Valid {
-		return nil, fmt.Errorf("unauthorized")
+		return nil, errors.New("unauthorized")
 	}
 
-	return claims, nil
+	return &claims.UsersId, nil
 }

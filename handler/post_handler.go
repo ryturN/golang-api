@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -45,9 +46,11 @@ func (h *postHandler) Create(c *gin.Context) {
 		dst := filepath.Join("public/picture", filepath.Base(newFileName))
 
 		c.SaveUploadedFile(post.Picture, dst)
+
+		post.Picture.Filename = fmt.Sprintf("%v/public/picture/%v", c.Request.Host, newFileName)
 	}
-	usersId := "user_T-hcRfeEKPVI_kdi9OeNi"
-	post.UsersId = usersId
+	usersId, _ := c.Get("users")
+	post.UsersId = usersId.(string)
 	if err := h.service.Create(&post); err != nil {
 		errorhandler.HandleError(c, err)
 		return
