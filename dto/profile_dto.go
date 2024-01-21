@@ -11,8 +11,10 @@ type ProfileResponse struct {
 }
 
 type UpdateProfileRequest struct {
+	UsersId  string `json:"users_id"`
 	FullName string `json:"full_name"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Fotos    string `json:"fotos"`
 }

@@ -2,34 +2,42 @@ package service
 
 import (
 	"github.com/golang-api/dto"
+	"github.com/golang-api/entity"
+	"github.com/golang-api/errorhandler"
+	"github.com/golang-api/helper"
 	"github.com/golang-api/repository"
 )
 
 type ProfileService interface {
-	Register(req *dto.RegisterRequest) error
-	Login(req *dto.LoginRequest) (*dto.LoginResponse, error)
-	UpdateProfil()
+	UpdateProfile(req *dto.UpdateProfileRequest) error
 }
 
 type profileService struct {
-	repository repository.AuthRepository
+	repository repository.ProfileRepository
 }
 
-func NewProfileService(r repository.AuthRepository) *authService {
-	return &authService{
+func NewProfileService(r repository.ProfileRepository) *profileService {
+	return &profileService{
 		repository: r}
 }
 
-// func (s *postService) UpdateProfile(req *dto.ProfileRequest) {
-// 	post := en{
-// 		UsersId: req.UsersId,
-// 		Post:    req.Post,
-// 	}
-// 	if req.Picture != nil {
-// 		post.PictureUrl = &req.Picture.Filename
-// 	}
-// 	if err := s.repository.Update(&post); err != nil {
-// 		return &errorhandler.InternalServerError{Message: err.Error()}
-// 	}
-// 	return nil
-// }
+func (s *profileService) UpdateProfile(req *dto.UpdateProfileRequest) error {
+	passwordHash, err := helper.HashPassword(req.Password)
+	if err != nil {
+		return &errorhandler.InternalServerError{Message: err.Error()}
+	}
+	users := entity.Users{
+		UsersId:  req.UsersId,
+		Username: req.Username,
+		FullName: req.FullName,
+		Email:    req.Email,
+		Password: passwordHash,
+	}
+	if req.Username == "" || req.FullName == "" || req.Email == "" || req.Password == "" {
+		return &errorhandler.BadRequestError{Message: "must filled "}
+	}
+	if err := s.repository.UpdateProfile(&users); err != nil {
+		return &errorhandler.InternalServerError{Message: err.Error()}
+	}
+	return nil
+}
