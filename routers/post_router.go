@@ -16,6 +16,8 @@ func PostRouter(v3 *gin.RouterGroup) {
 	postHandler := handler.NewPostHandler(postService)
 	r := v3.Group("/posts")
 	r.POST("/", postHandler.Create)
+	r.PUT("/update", postHandler.Update)
+	r.DELETE("/delete", postHandler.Delete)
 	r.GET("test", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusOK,
